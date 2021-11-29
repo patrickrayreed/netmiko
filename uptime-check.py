@@ -13,7 +13,7 @@ import csv
 #logger = logging.getLogger("netmiko")
 
 
-username = 'local-tech'
+username = 'local-username'
 
 # Defines Function to Return a dictionary to pass parameters to netmiko
 def sw_add(switch, username, password):
