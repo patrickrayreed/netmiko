@@ -1,7 +1,7 @@
 ###################################################################################################
 # For use when you need to log into multpile switches with their own unique local user passwords.
 # Reads a CSV with hostname,password format for each switch
-# Column Headers must be 
+# CSV Column Headers must be 'Switch' & 'Password', other columns are  ignored 
 ###################################################################################################
 
 from netmiko import ConnectHandler
