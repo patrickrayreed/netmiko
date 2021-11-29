@@ -1,8 +1,13 @@
+###################################################################################################
+# For use when you need to log into multpile switches with their own unique local user passwords.
+# Reads a CSV with hostname,password format for each switch
+# Column Headers must be 
+###################################################################################################
 
 from netmiko import ConnectHandler
 import csv
 
-#ENABLE THIS LOGGING IF YOU NEED TO TSHOOT
+########ENABLE THIS LOGGING IF YOU NEED TO TSHOOT
 #import logging
 #logging.basicConfig(filename='test.log', level=logging.DEBUG)
 #logger = logging.getLogger("netmiko")
@@ -21,6 +26,7 @@ def sw_add(switch, username, password):
             'session_timeout': 10000.0,
             'session_log_file_mode': 'append',
             'session_log': 'switch.txt', }
+# SESSION LOG CREATES A LOG FILE WITH THE SESSION OUTPUT, ONLY IF THE SCRIPT IS SUCESSFUL 
 
 # Reads CSV columns containing hostname,password data
 with open('reload-test-sw1-2.csv', mode='r') as csv_file:
@@ -34,11 +40,10 @@ with open('reload-test-sw1-2.csv', mode='r') as csv_file:
         switch = (row['Switch'])
         password = (row['Password'])
 
-
+#LOOP TO FORCE SCRIPT TO READ EACH ROW OF THE CSV
 for X in switch_list:
     net_connect = ConnectHandler(**X)
 
 # Execute show commands.
-
     output = net_connect.send_command('show ver | i uptime')
     print(output)
