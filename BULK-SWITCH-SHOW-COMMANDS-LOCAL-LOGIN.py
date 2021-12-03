@@ -1,7 +1,8 @@
 ###################################################################################################
-# For use when you need to log into multpile switches with their own unique local user passwords.
-# Reads a CSV with hostname,password format for each switch
-# CSV Column Headers must be 'Switch' & 'Password', other columns are  ignored 
+# For use when you need to log into multpile switches with their own unique local user passwords. #
+# Reads a CSV with hostname,password format for each switch                                       #
+# CSV Column Headers must be 'Switch' & 'Password', other columns are  ignored                    #
+# Written by Patrick Reed                                                                         #
 ###################################################################################################
 
 from netmiko import ConnectHandler
@@ -44,6 +45,18 @@ with open('reload-test-sw1-2.csv', mode='r') as csv_file:
 for X in switch_list:
     net_connect = ConnectHandler(**X)
 
-# Execute show commands.
+#######################################################################################################
+#                    EXECUTE IOS COMMANDS: UNCOMMENT THE COMMAND YOU WANT TO USE                      #
+#                                                                                                     #
+# NOTE: net_connect.send_config_set() Issues commands in Configuration Mode!!!                        #
+# NOTE: output = net_connect.send_command should send commands in enable mode if not, try:            #
+#                  net_connect.enable()                                                               #
+#                  output = net_connect.send_command()                                                #
+#                                                                                                     #
+# NOTE: Y Variable refers to a dictionary, so it must be defined as a string here                     #
+#   to Concatenate with the string containing the Cisco Command using  str(if_add(Y)                  #
+#######################################################################################################
+
     output = net_connect.send_command('show ver | i uptime')
+    
     print(output)
