@@ -1,9 +1,9 @@
-############################################################################################
-# THIS SCRIPT LOGS INTO MULTIPLE SWITCHES - 
-#EACH SWITCH HAVING ITS OWN UNIQUE LOCAL PASSWORD
-# PASSWORDS & HOSTNAMES ARE READ FROM A CSV
-# Written by Patrick Reed
-############################################################################################
+###################################################################################################
+# For use when you need to log into multpile switches with their own unique local user passwords. #
+# Reads a CSV with hostname,password format for each switch                                       #
+# CSV Column Headers must be 'Switch' & 'Password', other columns are  ignored                    #
+# Written by Patrick Reed                                                                         #
+###################################################################################################
 from netmiko import ConnectHandler
 import csv
 username = 'local-user'
@@ -49,6 +49,9 @@ for X, Y in zip(switch_list, if_num_list):
 #                    EXECUTE IOS COMMANDS: UNCOMMENT THE COMMAND YOU WANT TO USE                      #
 #                                                                                                     #
 # NOTE: net_connect.send_config_set() Issues commands in Configuration Mode!!!                        #
+# NOTE: output = net_connect.send_command should send commands in enable mode if not, try:            #
+#                  net_connect.enable()                                                               #
+#                  output = net_connect.send_command()                                                #
 #                                                                                                     #
 # NOTE: Y Variable refers to a dictionary, so it must be defined as a string here                     #
 #   to Concatenate with the string containing the Cisco Command using  str(if_add(Y)                  #
@@ -62,9 +65,5 @@ for X, Y in zip(switch_list, if_num_list):
 ###Show interface up/down status for each interface in the CSV
     output = net_connect.send_config_set('do sh int ' + str(if_add(Y)) + ' | i ' + str(if_add(Y)))
 
-    
     print(output)
-    # Because the Y Variable refers to a dictionary, it must be defined here
-    # as a string in order to Concatenate with the string containing the Cisco Command
-    # using str()
 
