@@ -1,3 +1,9 @@
+############################################################################################
+# THIS SCRIPT LOGS INTO MULTIPLE SWITCHES - 
+#EACH SWITCH HAVING ITS OWN UNIQUE LOCAL PASSWORD
+# PASSWORDS & HOSTNAMES ARE READ FROM A CSV
+# Written by Patrick Reed
+############################################################################################
 from netmiko import ConnectHandler
 import csv
 username = 'local-user'
@@ -27,18 +33,36 @@ with open('matched.csv', mode='r') as csv_file:
         if not row['Password']:
             pass
         else:
-            # Reads CSV columns containing hostname,password data - Populates List
+            
+###### Reads CSV columns containing hostname,password data - Populates Switch_List & if_num_list ######
 ####### NOTE: CSV HEADERS MUST MATCH HERE: 'Switch' & 'Password' ###############
             switch_list.append(sw_add(row['Switch'], username, row['Password']))
             # Reads CSV column containing interface number - Populates List
             if_num_list.append(if_add(row['ifnum']))
+#######################################################################################################
 
-###Loop to Read Row of SSH Creds & Interface Number to issue IOS command against
+###################Loop to Read Row of SSH Creds & Interface Number to issue IOS command against#######
 for X, Y in zip(switch_list, if_num_list):
     net_connect = ConnectHandler(**X)
 
-#### Execute IOA commands.
-    output = net_connect.send_config_set('do show interface '+  str(if_add(Y)))
+#######################################################################################################
+#                    EXECUTE IOS COMMANDS: UNCOMMENT THE COMMAND YOU WANT TO USE                      #
+#                                                                                                     #
+# NOTE: net_connect.send_config_set() Issues commands in Configuration Mode!!!                        #
+#                                                                                                     #
+# NOTE: Y Variable refers to a dictionary, so it must be defined as a string here                     #
+#   to Concatenate with the string containing the Cisco Command using  str(if_add(Y)                  #
+#######################################################################################################
+
+### Enter IF config mode & issue command: Switch#(if-cfg)shutdown/no shutdown
+
+    #output = net_connect.send_config_set(['interface '+  str(if_add(Y)),('shutdown')])
+    #output = net_connect.send_config_set(['interface ' + str(if_add(Y)), ('no shutdown')])
+
+###Show interface up/down status for each interface in the CSV
+    output = net_connect.send_config_set('do sh int ' + str(if_add(Y)) + ' | i ' + str(if_add(Y)))
+
+    
     print(output)
     # Because the Y Variable refers to a dictionary, it must be defined here
     # as a string in order to Concatenate with the string containing the Cisco Command
