@@ -1,6 +1,6 @@
 from netmiko import ConnectHandler
 import csv
-username = 'local-tech'
+username = 'local-user'
 
 # Defines Function to Return Interface Number
 def if_add(ifnum):
