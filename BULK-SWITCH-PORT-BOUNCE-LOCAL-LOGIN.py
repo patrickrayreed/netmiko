@@ -56,6 +56,16 @@ for X, Y in zip(switch_list, if_num_list):
 # NOTE: Y Variable refers to a dictionary, so it must be defined as a string here                     #
 #   to Concatenate with the string containing the Cisco Command using  str(if_add(Y)                  #
 #######################################################################################################
+##############################################################################################
+#                       V  REMOVE PORT SECURITY  V
+##############################################################################################
+   # output = net_connect.send_config_set(
+   #     ['interface ' + str(if_add(Y)), ('shutdown'), ('no switchport port-security maximum 1'),
+    #     ('no switchport port-security mac-address sticky'), ('no switchport port-security'), ('no shutdown'),
+    #     ('do wr mem')])
+##############################################################################################
+#                       ^  REMOVE PORT SECURITY  ^
+##############################################################################################
 
 ### Enter IF config mode & issue command: Switch#(if-cfg)shutdown/no shutdown
 
